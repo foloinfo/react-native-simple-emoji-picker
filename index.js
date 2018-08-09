@@ -37,7 +37,9 @@ const EmojiCategory = ({title, data, emojiPerLine, emojiSize, onPick, titleStyle
         <Text style={titleStyle} key={title}>{title}</Text>
       </View>
       <FlatList
-        maxToRenderPerBatch={1}
+        initialNumToRender={1}
+        maxToRenderPerBatch={25}
+        windowSize={5}
         contentContainerStyle={{flexDirection: 'column'}}
         numColumns={emojiPerLine}
         data={data}
@@ -60,10 +62,12 @@ const EmojiCategory = ({title, data, emojiPerLine, emojiSize, onPick, titleStyle
 
 const EmojiPicker = ({emojiPerLine, onPick, titleStyle, local, categoryContainerStyle, titleContaierStyle, emojiContainerStyle}) => {
 
-  const emojiSize = (width / emojiPerLine) * 0.6
+  const emojiSize = (width / emojiPerLine) * 0.7
   return(
-    <FlatList horizontal
+    <FlatList
+      initialNumToRender={1}
       maxToRenderPerBatch={1}
+      windowSize={2}
       data={emoji}
       keyExtractor={(item, index)=>item.title}
       renderItem={({item, index})=>(
