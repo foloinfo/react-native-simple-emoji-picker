@@ -1,6 +1,6 @@
 {
   "name": "react-native-simple-emoji-picker",
-  "version": "0.2.6",
+  "version": "0.3.1",
   "description": "A simple emoji picker component for React Native",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,6 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "emoji-datasource": "^2.4.4",
-    "emoji-datasource-twitter": "^4.1.0",
     "prop-types": "^15.6.0"
   }
 }
