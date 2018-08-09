@@ -30,6 +30,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "emoji-datasource": "^2.4.4",
+    "emoji-datasource-twitter": "^4.1.0",
     "prop-types": "^15.6.0"
   }
 }
