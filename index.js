@@ -14,7 +14,6 @@ const EmojiItem = ({size, item, onPress}) => {
           style={{width: size, height: size}}
           //source={emojis[item.image]}
           source={{uri: `https://cdnjs.cloudflare.com/ajax/libs/twemoji/11.0.1/2/72x72/${item.image}`}}
-          defaultSource={{uri: require('./loading.png'), width:size, height: size}}
         />
       </View>
     </TouchableOpacity>
