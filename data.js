@@ -10,7 +10,8 @@ const _emoji = emojiData.reduce((acc, item) => {
   acc[category].push({
     sortOrder: item.sort_order,
     char: charFromCode(item.unified),
-    image: item.image
+    image: item.image,
+    short_name: item.short_name
   });
   return acc;
 }, {});

@@ -1,55 +1,83 @@
-import React from 'react';
-import {View, SectionList, FlatList, Text, TouchableOpacity, Image} from 'react-native'
-import PropTypes from 'prop-types';
+import React from 'react'
+import {View, FlatList, Text, TouchableOpacity, Image, Dimensions} from 'react-native'
+import PropTypes from 'prop-types'
 
-import emoji from './data';
+import emoji from './data'
 import {emojis} from './emojis'
 
-const EmojiItem = ({size, item, onPress}) => {
+const width = Dimensions.get('window').width
+
+const EmojiItem = ({item, size, onPress, local, emojiContainerStyle}) => {
+  let source = {uri: `https://cdnjs.cloudflare.com/ajax/libs/twemoji/11.0.1/2/72x72/${item.image}`}
+  if(local){
+    source = emojis[item.image]
+  }
+
+  const onPrePress = ()=>{
+    console.log('pressed');
+  }
   return(
-    <TouchableOpacity style={{flex: 0, height: size, width: size}} onPress={onPress}>
-      <View style={{flex: 0, height: size, width: size}}>
+    <TouchableOpacity onPress={onPrePress}>
+      <View style={emojiContainerStyle}>
         <Image
           resizeMethod='resize'
           style={{width: size, height: size}}
-          source={emojis[item.image]}
-          //source={{uri: `https://cdnjs.cloudflare.com/ajax/libs/twemoji/11.0.1/2/72x72/${item.image}`}}
+          source={source}
         />
       </View>
     </TouchableOpacity>
   )
 }
 
-const EmojiCategory = ({title, data, emojiSize, onPick}) =>{
+const EmojiCategory = ({title, data, emojiPerLine, emojiSize, onPick, titleStyle, local, categoryContainerStyle, titleContaierStyle, emojiContainerStyle}) =>{
+
   return(
-    <View key={title}>
-      <View style={{width: '100%'}}>
-        <Text key={title}>{title}</Text>
+    <View style={categoryContainerStyle}>
+      <View style={titleContaierStyle}>
+        <Text style={titleStyle} key={title}>{title}</Text>
       </View>
       <FlatList
+        maxToRenderPerBatch={1}
         contentContainerStyle={{flexDirection: 'column'}}
-        numColumns={8}
+        numColumns={emojiPerLine}
         data={data}
+        keyExtractor={(item, index)=> item.image}
+        getItemLayout={(data, index)=>({ length: emojiSize, offset: emojiSize * index, index })}
         renderItem={({item, index})=>{
-          return(<EmojiItem key={index} size={emojiSize} item={item} />)
+          return(
+            <EmojiItem
+              item={item}
+              local={local}
+              size={emojiSize}
+              emojiContainerStyle={emojiContainerStyle}
+              onPress={onPick}
+            />)
         }}
       />
     </View>
   )
 }
 
-const EmojiPicker = ({headerStyle, containerHeight, containerBackgroundColor, emojiSize, onPick, emojiCategories, showHeader}) => {
+const EmojiPicker = ({emojiPerLine, onPick, titleStyle, local, categoryContainerStyle, titleContaierStyle, emojiContainerStyle}) => {
 
+  const emojiSize = (width / emojiPerLine) * 0.6
   return(
     <FlatList horizontal
+      maxToRenderPerBatch={1}
       data={emoji}
+      keyExtractor={(item, index)=>item.title}
       renderItem={({item, index})=>(
         <EmojiCategory
-          key={item.title}
           title={item.title}
+          titleStyle={titleStyle}
+          titleContaierStyle={titleContaierStyle}
           data={item.data}
+          emojiPerLine={emojiPerLine}
           emojiSize={emojiSize}
+          categoryContainerStyle={categoryContainerStyle}
+          emojiContainerStyle={emojiContainerStyle}
           onPick={onPick}
+          local={local}
         />
       )}
     />
@@ -57,43 +85,11 @@ const EmojiPicker = ({headerStyle, containerHeight, containerBackgroundColor, em
 
 EmojiPicker.propTypes = {
   onPick: PropTypes.func,
-  headerStyle: PropTypes.object,
-  containerHeight: PropTypes.number.isRequired,
-  containerBackgroundColor: PropTypes.string.isRequired,
-  emojiSize: PropTypes.number.isRequired,
-  emojiCategories: PropTypes.array,
-  showHeader: PropTypes.bool
-};
+  local: PropTypes.bool
+}
 
 EmojiPicker.defaultProps = {
-  containerHeight: 240,
-  containerBackgroundColor: 'rgba(0, 0, 0, 0.1)',
-  emojiSize: 40,
-  emojiCategories: ['People', 'Nature', 'Foods', 'Activity', 'Places', 'Objects', 'Symbols', 'Flags'],
-  showHeader: true
-};
+  local: true
+}
 
-const styles = {
-  picker: {
-    flex: 0,
-    width: '100%',
-  },
-  category: {
-    flex: 0,
-    paddingHorizontal: 14,
-    paddingTop: 2,
-    marginLeft: 2,
-    paddingLeft: 0
-  },
-  categoryName: {
-    paddingVertical: 8,
-    paddingHorizontal: 4,
-    fontSize: 12,
-    color: "#888",
-  },
-  categoryItems: {
-    flex: 1,
-  }
-};
-
-export default EmojiPicker;
+export default EmojiPicker
