@@ -12,8 +12,8 @@ const EmojiItem = ({size, item, onPress}) => {
         <Image
           resizeMethod='resize'
           style={{width: size, height: size}}
-          //source={emojis[item.image]}
-          source={{uri: `https://cdnjs.cloudflare.com/ajax/libs/twemoji/11.0.1/2/72x72/${item.image}`}}
+          source={emojis[item.image]}
+          //source={{uri: `https://cdnjs.cloudflare.com/ajax/libs/twemoji/11.0.1/2/72x72/${item.image}`}}
         />
       </View>
     </TouchableOpacity>
